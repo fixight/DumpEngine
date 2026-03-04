@@ -13,13 +13,11 @@ void DCamera::Tick(float deltaTime) {
 }
 
 
-// DCamera.cpp
 glm::mat4 DCamera::GetViewMatrix() const {
     DVector pos = GetWorldLocation();
     DVector forward = GetForwardVector();
 
-    // ЗАЩИТА ОТ ДУРАКА:
-    // Если вектор длины 0, ставим дефолт (смотреть вперед по Z)
+
     if (forward.Length() < 0.0001f) {
         forward = DVector(0.0f, 0.0f, -1.0f);
     }

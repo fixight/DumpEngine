@@ -21,7 +21,6 @@ public:
 
     void InitDefaultTextures();
 
-    // Возвращает ID дефолтной текстуры по ее типу
     unsigned int GetDefaultTexture(const std::string& typeName);
 
 private:
@@ -29,8 +28,7 @@ private:
     std::map<std::string, std::shared_ptr<DStaticMesh>> meshCache;
     std::map<std::string, unsigned int> textureCache;
 
-    // --- НОВЫЕ ПОЛЯ ---
-    // Хранилище для ID наших дефолтных текстур
+
     unsigned int defaultAlbedo = 0;
     unsigned int defaultNormal = 0;
     unsigned int defaultMetallic = 0;

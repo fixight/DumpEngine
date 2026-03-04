@@ -10,7 +10,7 @@
 #include "stb_image.h"
 #include <glad/glad.h>
 
-// Вспомогательная функция, вынесена в этот файл, так как используется только здесь
+
 unsigned int TextureFromFile(const char* path, const std::string& directory, const std::string& typeName);
 
 
@@ -28,14 +28,14 @@ std::unique_ptr<Model> ModelLoader::LoadModel(const std::string& path) {
 
     directory = path.substr(0, path.find_last_of('/'));
 
-    // Заранее обрабатываем все материалы в сцене
+
     model->materials.resize(scene->mNumMaterials);
     for(unsigned int i = 0; i < scene->mNumMaterials; ++i)
     {
         aiMaterial* material = scene->mMaterials[i];
-        // Теперь передаем typeName в loadMaterialTexture
+
         model->materials[i].albedoMap    = loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
-        model->materials[i].normalMap    = loadMaterialTexture(material, aiTextureType_HEIGHT, "texture_normal"); // Assimp часто грузит карты нормалей как HEIGHT
+        model->materials[i].normalMap    = loadMaterialTexture(material, aiTextureType_HEIGHT, "texture_normal");
         model->materials[i].metallicMap  = loadMaterialTexture(material, aiTextureType_METALNESS, "texture_metallic");
         model->materials[i].roughnessMap = loadMaterialTexture(material, aiTextureType_DIFFUSE_ROUGHNESS, "texture_roughness");
         model->materials[i].aoMap        = loadMaterialTexture(material, aiTextureType_AMBIENT_OCCLUSION, "texture_ao");
@@ -59,7 +59,7 @@ void ModelLoader::processNode(aiNode* node, const aiScene* scene, Model& model) 
 Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene, Model& model) {
     Mesh newMesh;
 
-    // Загрузка вершин (код остается таким же)
+
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex;
         vertex.Position = {mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z};
@@ -78,7 +78,7 @@ Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene, Model& model) 
         newMesh.vertices.push_back(vertex);
     }
 
-    // Загрузка индексов (код остается таким же)
+
     for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++) {
@@ -86,13 +86,11 @@ Mesh ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene, Model& model) 
         }
     }
 
-    // Присваиваем мешу индекс его материала.
     newMesh.materialIndex = mesh->mMaterialIndex;
 
     return newMesh;
 }
 
-// ИСПРАВЛЕННАЯ ВЕРСИЯ
 unsigned int ModelLoader::loadMaterialTexture(aiMaterial* mat, aiTextureType type, const std::string& typeName) {
     if (mat->GetTextureCount(type) == 0) {
         return ResourceManager::Get().GetDefaultTexture(typeName);
@@ -101,20 +99,20 @@ unsigned int ModelLoader::loadMaterialTexture(aiMaterial* mat, aiTextureType typ
     aiString str;
     mat->GetTexture(type, 0, &str);
 
-    // Собираем путь: папка модели + имя файла текстуры
+
     std::string fullPath = this->directory + "/" + std::string(str.C_Str());
 
-    // Вся магия теперь тут:
+
     return ResourceManager::Get().LoadTexture(fullPath, typeName);
 }
 
-// ИСПРАВЛЕННАЯ ФИНАЛЬНАЯ ВЕРСИЯ
+
 unsigned int TextureFromFile(const char* path, const std::string& directory, const std::string& typeName) {
     std::string filename = std::string(path);
     std::replace(filename.begin(), filename.end(), '\\', '/');
 
     if (filename.length() > 2 && filename[1] == ':' && filename[2] == '/') {
-        // Путь абсолютный, используем как есть
+
     } else {
         filename = directory + '/' + filename;
     }
@@ -144,10 +142,9 @@ unsigned int TextureFromFile(const char* path, const std::string& directory, con
         std::cout << "Texture failed to load at path: " << filename << ". Using default." << std::endl;
         stbi_image_free(data);
 
-        // Освобождаем ID, который мы сгенерировали, но не смогли использовать
+
         glDeleteTextures(1, &textureID);
 
-        // ВОЗВРАЩАЕМ ДЕФОЛТНУЮ ТЕКСТУРУ ИЗ МЕНЕДЖЕРА!
         textureID = ResourceManager::Get().GetDefaultTexture(typeName);
     }
 

@@ -40,11 +40,9 @@ void DMeshComponent::CollectRenderCommands(std::vector<RenderCommand>& outArray)
     for (const auto& mesh_ptr : subMeshes) {
         RenderCommand cmd;
 
-        // .get() возвращает DBaseMesh*, который неявно преобразуется в const DBaseMesh*
         cmd.mesh = mesh_ptr.get();
 
-        // GetMaterial возвращает const DMaterial&. Взятие адреса & дает const DMaterial*.
-        // Типы совпадают, const_cast не нужен!
+
         cmd.material = &_staticMesh->GetMaterial(mesh_ptr->materialIndex);
 
         cmd.modelMatrix = worldMat;

@@ -26,8 +26,8 @@ public:
 private:
     DSceneComponent* _controlledComponent = nullptr;
 
-    float totalYaw = 0.0f;   // Накопленный поворот влево-вправо
-    float totalPitch = 0.0f; // Накопленный поворот вверх-вниз
+    float totalYaw = 0.0f;
+    float totalPitch = 0.0f;
 
     float MouseSensitivity = 0.1f;
     bool _isFirstUpdate = true;
