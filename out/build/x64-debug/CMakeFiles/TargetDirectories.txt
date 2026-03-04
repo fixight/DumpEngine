@@ -1,0 +1,5 @@
+C:/Users/egors/source/repos/DumpEngine/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/egors/source/repos/DumpEngine/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/egors/source/repos/DumpEngine/out/build/x64-debug/DumpEngine/CMakeFiles/DumpEngine.dir
+C:/Users/egors/source/repos/DumpEngine/out/build/x64-debug/DumpEngine/CMakeFiles/edit_cache.dir
+C:/Users/egors/source/repos/DumpEngine/out/build/x64-debug/DumpEngine/CMakeFiles/rebuild_cache.dir
